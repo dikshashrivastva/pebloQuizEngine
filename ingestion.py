@@ -5,7 +5,7 @@ from database import SessionLocal
 from models import SourceDocument, ContentChunk
 
 def extract_text_from_pdf(pdf_path: str) -> str:
-    """Extract all text from a PDF file."""
+    
     doc = fitz.open(pdf_path)
     full_text = ""
     for page in doc:
@@ -14,15 +14,15 @@ def extract_text_from_pdf(pdf_path: str) -> str:
     return full_text
 
 def clean_text(text: str) -> str:
-    """Remove extra whitespace and garbage characters."""
+    
     text = re.sub(r'\n+', '\n', text)
     text = re.sub(r'[ \t]+', ' ', text)
     text = text.strip()
     return text
 
 def chunk_text(text: str, chunk_size: int = 500) -> list:
-    """Break text into chunks of roughly chunk_size characters."""
-    # Split by newlines instead of periods
+    
+   
     lines = [line.strip() for line in text.split('\n') if line.strip()]
     chunks = []
     current_chunk = ""
@@ -38,7 +38,7 @@ def chunk_text(text: str, chunk_size: int = 500) -> list:
     if current_chunk.strip():
         chunks.append(current_chunk.strip())
 
-    # If we only got 1 chunk, split it in half
+    
     if len(chunks) == 1 and len(chunks[0]) > 200:
         mid = len(chunks[0]) // 2
         chunks = [chunks[0][:mid], chunks[0][mid:]]
@@ -46,7 +46,7 @@ def chunk_text(text: str, chunk_size: int = 500) -> list:
     return chunks
 
 def detect_subject_grade(filename: str):
-    """Detect subject and grade from filename."""
+   
     filename = filename.lower()
     subject = "General"
     grade = 1
@@ -66,7 +66,7 @@ def detect_subject_grade(filename: str):
     return subject, grade
 
 def ingest_pdf(pdf_path: str, filename: str):
-    """Full ingestion pipeline: extract → clean → chunk → store."""
+    
     db = SessionLocal()
     try:
         raw_text = extract_text_from_pdf(pdf_path)

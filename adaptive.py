@@ -4,7 +4,7 @@ from models import StudentLevel, StudentAnswer
 DIFFICULTY_LEVELS = ["easy", "medium", "hard"]
 
 def get_or_create_student_level(db, student_id: str) -> StudentLevel:
-    """Get student's current difficulty level, or create a new one."""
+
     level = db.query(StudentLevel).filter(StudentLevel.student_id == student_id).first()
     if not level:
         level = StudentLevel(student_id=student_id, difficulty="easy", score=0.0)
@@ -14,11 +14,6 @@ def get_or_create_student_level(db, student_id: str) -> StudentLevel:
     return level
 
 def update_difficulty(student_id: str, is_correct: bool):
-    """
-    Adaptive logic:
-    - 2 correct in a row → increase difficulty
-    - 2 wrong in a row → decrease difficulty
-    """
     db = SessionLocal()
     try:
         level = get_or_create_student_level(db, student_id)

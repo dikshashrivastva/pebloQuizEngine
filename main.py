@@ -21,7 +21,7 @@ UPLOAD_DIR = "uploaded_pdfs"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-# ─── 1. INGEST PDF ────────────────────────────────────────────────────────────
+# INGEST PDF
 
 @app.post("/ingest")
 async def ingest(file: UploadFile = File(...)):
@@ -38,7 +38,7 @@ async def ingest(file: UploadFile = File(...)):
     return JSONResponse(content={"message": "PDF ingested successfully", "data": result})
 
 
-# ─── 2. GENERATE QUIZ ─────────────────────────────────────────────────────────
+# GENERATE QUIZ 
 
 @app.post("/generate-quiz")
 def generate_quiz(source_id: str):
@@ -47,7 +47,7 @@ def generate_quiz(source_id: str):
     return JSONResponse(content={"message": "Quiz generated", "data": result})
 
 
-# ─── 3. GET QUIZ QUESTIONS ────────────────────────────────────────────────────
+# GET QUIZ QUESTIONS 
 
 @app.get("/quiz")
 def get_quiz(
@@ -56,10 +56,8 @@ def get_quiz(
     student_id: str = None,
     db: Session = Depends(get_db)
 ):
-    """
-    Retrieve quiz questions.
-    If student_id is provided, difficulty is auto-detected from their level.
-    """
+    
+
     query = db.query(QuizQuestion)
 
     if student_id and not difficulty:
@@ -92,7 +90,7 @@ def get_quiz(
     return JSONResponse(content={"questions": result, "count": len(result)})
 
 
-# ─── 4. SUBMIT ANSWER ─────────────────────────────────────────────────────────
+# SUBMIT ANSWER 
 
 class AnswerInput(BaseModel):
     student_id: str
@@ -128,7 +126,7 @@ def submit_answer(payload: AnswerInput, db: Session = Depends(get_db)):
     })
 
 
-# ─── 5. STUDENT STATS ─────────────────────────────────────────────────────────
+#  STUDENT STATS
 
 @app.get("/student/{student_id}/stats")
 def student_stats(student_id: str, db: Session = Depends(get_db)):
@@ -147,7 +145,7 @@ def student_stats(student_id: str, db: Session = Depends(get_db)):
     })
 
 
-# ─── ROOT ─────────────────────────────────────────────────────────────────────
+# ROOT
 
 @app.get("/")
 def root():
