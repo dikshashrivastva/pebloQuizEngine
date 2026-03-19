@@ -178,7 +178,7 @@ This ensures students are always challenged at the right level.
   "new_difficulty_level": "medium",
   "message": "Great job! Level up!"
 }
-
-
+```
+### Visualization
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/13bc9704-0b45-4c05-b669-1a43bb044dfd" />
 
